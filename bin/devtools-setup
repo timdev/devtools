@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+function getProjectDir()
+{
+    $dir = dirname(realpath(__DIR__));
+    while ($dir !== '/'){
+        $dir = dirname($dir);
+        if (file_exists("{$dir}/composer.json")){
+            return $dir;
+        }
+    }
+
+    throw new \RuntimeException("Couldn't locate project directory. No composer.json file in any parent directory!");
+}
+
+function safeLink($target, $link)
+{
+    // @todo - get crafty with stat() to figure out if an existing $link is
+    //         already a hardlink to $target (pointing at same inode)?
+
+    // if the project-file exists, but isn't already a link to this package's
+    // version, then let's move it out of the way.
+    if (file_exists($link) && stat($link)['ino'] !== stat($target)['ino']){
+        $bn = basename($link);
+        echo "WARNING: Moving your local $bn to $bn.bak" . PHP_EOL;
+        rename($link, "$link.bak");
+    }
+
+    if (! file_exists($link)){
+        echo "Linking $link => $target\n";
+        link($target, $link);
+        chmod($link, 0444);
+    }
+}
+
+// save this for later:
+$oldCwd = getcwd();
+
+// figure out paths for "here", and the project containing this lib.
+$libDir = dirname(__DIR__);    // root of this repo.
+$projectDir = getProjectDir();      // root of project that includes this package.
+
+chdir($projectDir);
+
+safeLink("$libDir/src/TimDev/ruleset.xml", "$projectDir/phpcs.xml.dist");
+safeLink("$libDir/src/psalm.xml.dist", "$projectDir/psalm.xml.dist");
+safeLink("$libDir/src/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
