@@ -18,9 +18,7 @@
         "psalm/plugin-phpunit": "^0.16.1",
         "phpunit/phpunit": "^9.5"
     },
-    "bin": [
-        "devtools-setup"
-    ],
+    "bin": ["bin/devtools-setup"],
     "scripts": {
         "post-install-cmd": "ln -s vendor/timdev/devtools/src/TimDev/ruleset phpcs.xml.dist"
     }
