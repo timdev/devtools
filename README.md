@@ -39,9 +39,10 @@ project root:
 vendor/bin/devtools-setup
 ```
 
-Psalm is set up to have a baseline file, and will complain if there isn't one.
-You can ignore the warning (if you want to fix stuff), or have it create a 
-baseline for you like so:
+Psalm is set up to use a baseline file, and will complain if there isn't one.
+If you project does not already have a `psalm-baseline.xml` file in its root
+directory, `devtools-setup` will install an empty baseline file for you, so that
+psalm will run without error.
 
 ```
 vendor/bin/psalm --set-baseline=psalm-baseline.xml
