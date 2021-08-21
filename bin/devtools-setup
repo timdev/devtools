@@ -16,12 +16,8 @@ function getProjectDir()
 
 function safeLink($target, $link)
 {
-    // @todo - get crafty with stat() to figure out if an existing $link is
-    //         already a hardlink to $target (pointing at same inode)?
-
-    // if the project-file exists, but isn't already a link to this package's
-    // version, then let's move it out of the way.
-    if (file_exists($link) && stat($link)['ino'] !== stat($target)['ino']){
+    // If local file differs from devtools version, back up local version and inform user.
+    if (file_exists($link) && sha1_file($link) !== sha1_file($target)){
         $bn = basename($link);
         echo "WARNING: Moving your local $bn to $bn.bak" . PHP_EOL;
         rename($link, "$link.bak");
