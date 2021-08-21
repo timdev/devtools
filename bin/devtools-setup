@@ -25,7 +25,7 @@ function safeLink($target, $link)
 
     if (! file_exists($link)){
         echo "Linking $link => $target\n";
-        link($target, $link);
+        copy($target, $link);
         chmod($link, 0444);
     }
 }

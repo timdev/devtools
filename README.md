@@ -32,7 +32,7 @@ Add this package a dev-dependency:
 composer install --dev timdev/devtools
 ```
 
-Then run the setup script which will hard-link the three config files into your
+Then run the setup script which will copy the three config files into your
 project root:
 
 ```
@@ -47,6 +47,19 @@ psalm will run without error.
 ```
 vendor/bin/psalm --set-baseline=psalm-baseline.xml
 ```
+
+### Local Tweaks
+
+Do not make changes to any of the `.xml.dist` files installed by 
+`devtools-setup`. Your changes will be overwritten during an upgrade. Instead,
+you should add non-`.dist` versions.
+
+## Upgrading
+
+Since the main point of this package is to manage local configuration for 
+various tools, you should re-run `vendor/bin/devtools-setup` after upgrading
+this package.
+
 
 ## Inspiration
 
