@@ -1,7 +1,7 @@
 {
     "name": "timdev/devtools",
-    "description": "A common development dependency for TimDev projects.",
     "type": "library",
+    "description": "A common development dependency for TimDev projects.",
     "license": "MIT",
     "authors": [
         {
@@ -9,16 +9,19 @@
             "email": "dev@timdev.com"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "php": "^8",
+        "ergebnis/composer-normalize": "^2.15",
+        "phpunit/phpunit": "^9.5",
+        "psalm/plugin-phpunit": "^0.16.1",
         "squizlabs/php_codesniffer": "^3.6",
         "symfony/console": "^5.3",
-        "vimeo/psalm": "^4.9",
-        "psalm/plugin-phpunit": "^0.16.1",
-        "phpunit/phpunit": "^9.5"
+        "vimeo/psalm": "^4.9"
     },
-    "bin": ["bin/devtools-setup"],
+    "minimum-stability": "stable",
+    "bin": [
+        "bin/devtools-setup"
+    ],
     "scripts": {
         "post-install-cmd": "ln -s vendor/timdev/devtools/src/TimDev/ruleset phpcs.xml.dist"
     }
