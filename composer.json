@@ -22,8 +22,5 @@
     "minimum-stability": "stable",
     "bin": [
         "bin/devtools-setup"
-    ],
-    "scripts": {
-        "post-install-cmd": "ln -s vendor/timdev/devtools/src/TimDev/ruleset phpcs.xml.dist"
-    }
+    ]
 }
