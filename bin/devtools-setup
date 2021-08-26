@@ -30,12 +30,40 @@ function safeLink($target, $link)
     }
 }
 
+function ensureComposerScripts($composerPath)
+{
+    echo "Backing up your composer.json (to composer.json.bak)\n";
+    copy($composerPath, "$composerPath.bak");
+    echo "Ensuring composer scripts are configured (modifying your composer.json)\n";
+
+    $json = file_get_contents($composerPath);
+    $data = json_decode($json, true);
+
+
+    $data['scripts'] = array_merge(
+        $data['scripts'] ?? [],
+        [
+            'cs' => 'phpcs',
+            'cs:fix' => 'phpcbf',
+            'test' => 'phpunit --testdox --color=always',
+            'coverage' => 'XDEBUG_MODE=coverage phpunit --coverage-text --colors=always',
+            'coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage'
+        ]
+    );
+
+    $json = json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    file_put_contents($composerPath, $json);
+}
+
+
 // save this for later:
 $oldCwd = getcwd();
 
 // figure out paths for "here", and the project containing this lib.
 $libDir = dirname(__DIR__);    // root of this repo.
 $projectDir = getProjectDir();      // root of project that includes this package.
+
+
 
 chdir($projectDir);
 
@@ -48,3 +76,6 @@ if (!file_exists("$projectDir/$baselineFilename")){
     echo "Installing empty $baselineFilename\n";
     copy("$libDir/src/$baselineFilename", "$projectDir/$baselineFilename");
 }
+
+
+ensureComposerScripts("$projectDir/composer.json");
