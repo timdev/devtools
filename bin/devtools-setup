@@ -67,14 +67,14 @@ $projectDir = getProjectDir();      // root of project that includes this packag
 
 chdir($projectDir);
 
-safeLink("$libDir/src/TimDev/ruleset.xml", "$projectDir/phpcs.xml.dist");
-safeLink("$libDir/src/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
-safeLink("$libDir/src/psalm.xml.dist", "$projectDir/psalm.xml.dist");
+safeLink("$libDir/tooling-config/phpcs.xml.dist", "$projectDir/phpcs.xml.dist");
+safeLink("$libDir/tooling-config/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
+safeLink("$libDir/tooling-config/psalm.xml.dist", "$projectDir/psalm.xml.dist");
 
 $baselineFilename= "psalm-baseline.xml";
 if (!file_exists("$projectDir/$baselineFilename")){
     echo "Installing empty $baselineFilename\n";
-    copy("$libDir/src/$baselineFilename", "$projectDir/$baselineFilename");
+    copy("$libDir/tooling-config/$baselineFilename", "$projectDir/$baselineFilename");
 }
 
 
