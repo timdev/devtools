@@ -43,11 +43,12 @@ function ensureComposerScripts($composerPath)
     $data['scripts'] = array_merge(
         $data['scripts'] ?? [],
         [
+            'analyze' => 'psalm',
+            'coverage' => 'XDEBUG_MODE=coverage phpunit --coverage-text --colors=always',
+            'coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage',
             'cs' => 'phpcs',
             'cs:fix' => 'phpcbf',
             'test' => 'phpunit --testdox --color=always',
-            'coverage' => 'XDEBUG_MODE=coverage phpunit --coverage-text --colors=always',
-            'coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage'
         ]
     );
 
