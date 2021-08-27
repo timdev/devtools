@@ -62,13 +62,13 @@ function ensureComposerScripts($composerPath)
             $data['scripts-descriptions'] ?? [],
         [
             'dev:analyze' => 'Run static analysis with psalm.',
-            'dev:coverage' => 'Report unit test coverage with output in the terminal',
-            'dev:coverage:html' => 'Generate unit test coverage report',
-            'dev:cs' => 'Run code style checks',
-            'dev:cs:fix' => 'Fix code style violations',
+            'dev:coverage' => 'Report unit test coverage with output in the terminal.',
+            'dev:coverage:html' => 'Generate unit test coverage report.',
+            'dev:cs' => 'Run code style checks.',
+            'dev:cs:fix' => 'Fix code style violations.',
             'dev:qa' => 'Run all quality checks (tests, static analysis, and coding standard).',
-            'dev:test' => 'Run unit tests',
-            'dev' => 'Shortcut for dev:qa'
+            'dev:test' => 'Run unit tests.',
+            'dev' => 'Shortcut for dev:qa.'
         ]
     );
 
