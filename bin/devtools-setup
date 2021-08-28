@@ -45,7 +45,7 @@ function ensureComposerScripts($composerPath)
         [
             'dev:analyze' => 'psalm',
             'dev:coverage' => 'XDEBUG_MODE=coverage phpunit --coverage-text --colors=always',
-            'dev:coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage',
+            'dev:coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage && echo \'\nCoverage Report: build/coverage/index.html\'',
             'dev:cs' => 'phpcs',
             'dev:cs:fix' => 'phpcbf',
             'dev:qa' => [
