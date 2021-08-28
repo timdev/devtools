@@ -4,30 +4,14 @@
 function getProjectDir()
 {
     $dir = dirname(realpath(__DIR__));
-    while ($dir !== '/'){
+    while ($dir !== '/') {
         $dir = dirname($dir);
-        if (file_exists("{$dir}/composer.json")){
+        if (file_exists("{$dir}/composer.json")) {
             return $dir;
         }
     }
 
     throw new \RuntimeException("Couldn't locate project directory. No composer.json file in any parent directory!");
-}
-
-function safeLink($target, $link)
-{
-    // If local file differs from devtools version, back up local version and inform user.
-    if (file_exists($link) && sha1_file($link) !== sha1_file($target)){
-        $bn = basename($link);
-        echo "WARNING: Moving your local $bn to $bn.bak" . PHP_EOL;
-        rename($link, "$link.bak");
-    }
-
-    if (! file_exists($link)){
-        echo "Linking $link => $target\n";
-        copy($target, $link);
-        chmod($link, 0444);
-    }
 }
 
 function ensureComposerScripts($composerPath)
@@ -59,7 +43,7 @@ function ensureComposerScripts($composerPath)
     );
 
     $data['scripts-descriptions'] = array_merge(
-            $data['scripts-descriptions'] ?? [],
+        $data['scripts-descriptions'] ?? [],
         [
             'dev:analyze' => 'Run static analysis with psalm.',
             'dev:coverage' => 'Report unit test coverage with output in the terminal.',
@@ -76,27 +60,67 @@ function ensureComposerScripts($composerPath)
     file_put_contents($composerPath, $json);
 }
 
+function copyConfig($target, $link): void
+{
+    // If local file differs from devtools version, back up local version and inform user.
+    if (file_exists($link) && sha1_file($link) !== sha1_file($target)) {
+        $bn = basename($link);
+        echo "WARNING: Moving your existing $bn to $bn.bak" . PHP_EOL;
+        rename($link, "$link.bak");
+    }
+
+    if (!file_exists($link)) {
+        echo "Linking $link => $target\n";
+        copy($target, $link);
+        chmod($link, 0444);
+    }
+}
+
+// assume we'll be successful.
+$rc = 0;
 
 // save this for later:
 $oldCwd = getcwd();
 
-// figure out paths for "here", and the project containing this lib.
-$libDir = dirname(__DIR__);    // root of this repo.
-$projectDir = getProjectDir();      // root of project that includes this package.
+try {
+    // figure out paths for "here", and the project containing this lib.
+    $libDir = dirname(__DIR__);    // root of this repo.
+    $projectDir = getProjectDir();      // root of project that includes this package.
 
+    chdir($projectDir);
 
+    copyConfig("$libDir/tooling-config/phpcs.xml.dist", "$projectDir/phpcs.xml.dist");
+    copyConfig("$libDir/tooling-config/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
+    copyConfig("$libDir/tooling-config/psalm.xml.dist", "$projectDir/psalm.xml.dist");
+    copyConfig("$libDir/tooling-config/captainhook.json", "$projectDir/captainhook.json");
 
-chdir($projectDir);
+    $ghDir = "$projectDir/.github/workflows";
+    if (! is_dir($ghDir)){
+        if (!mkdir("$projectDir/.github/workflows", 0775, true)
+            && !is_dir("$projectDir/.github/workflows")) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', "$projectDir/.github/workflows"));
+        }
+    }
 
-safeLink("$libDir/tooling-config/phpcs.xml.dist", "$projectDir/phpcs.xml.dist");
-safeLink("$libDir/tooling-config/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
-safeLink("$libDir/tooling-config/psalm.xml.dist", "$projectDir/psalm.xml.dist");
+    copyConfig("$libDir/tooling-config/github/workflows/ci.yml", "$projectDir/.github/workflows/ci.yml");
 
-$baselineFilename= "psalm-baseline.xml";
-if (!file_exists("$projectDir/$baselineFilename")){
-    echo "Installing empty $baselineFilename\n";
-    copy("$libDir/tooling-config/$baselineFilename", "$projectDir/$baselineFilename");
+    $baselineFilename = "psalm-baseline.xml";
+    if (!file_exists("$projectDir/$baselineFilename")) {
+        echo "Installing empty $baselineFilename\n";
+        copy("$libDir/tooling-config/$baselineFilename", "$projectDir/$baselineFilename");
+    }
+
+    ensureComposerScripts("$projectDir/composer.json");
+
+    echo "Ensuring git hooks are installed ... \n";
+    passthru("vendor/bin/captainhook install -n");
+    echo "Done.\n";
+} catch (\Throwable $e) {
+    echo "ERROR: {$e->getMessage()}";
+    echo $e->getTraceAsString();
+    $rc = 1;
+} finally {
+    chdir($oldCwd);
 }
+exit($rc);
 
-
-ensureComposerScripts("$projectDir/composer.json");
