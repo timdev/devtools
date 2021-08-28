@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "^8",
+        "php": "^7.4 | ^8.0",
         "ergebnis/composer-normalize": "^2.15",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.16.1",
