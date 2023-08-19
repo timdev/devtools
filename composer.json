@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
+        "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0",
         "ext-json": "*",
         "captainhook/captainhook": "^5.10",
         "ergebnis/composer-normalize": "^2.15",
@@ -24,5 +24,10 @@
     "minimum-stability": "stable",
     "bin": [
         "bin/devtools-setup"
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    }
 }
