@@ -10,16 +10,7 @@
         }
     ],
     "require": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
-        "ext-json": "*",
-        "captainhook/captainhook": "^5.10",
-        "ergebnis/composer-normalize": "^2.15",
-        "lctrs/psalm-psr-container-plugin": "^1.4",
-        "phpunit/phpunit": "^10 || ^11",
-        "psalm/plugin-phpunit": "^0.16.1 || ^0.18.0 || ^0.19.0",
-        "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.6",
-        "vimeo/psalm": "^5.0"
+        "php": "^8.1"
     },
     "minimum-stability": "stable",
     "bin": [
@@ -28,6 +19,14 @@
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true
+        }
+    },
+    "require-dev": {
+        "ramsey/devtools-lib": "^2.2"
+    },
+    "extra": {
+        "ramsey/devtools": {
+            "command-prefix": "dev"
         }
     }
 }
