@@ -10,16 +10,16 @@
         }
     ],
     "require": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+        "php": "~8.2.27 || ~8.3.16 || ~8.4.3",
         "ext-json": "*",
         "captainhook/captainhook": "^5.10",
         "ergebnis/composer-normalize": "^2.15",
         "lctrs/psalm-psr-container-plugin": "^1.4",
-        "phpunit/phpunit": "^10 || ^11",
+        "phpunit/phpunit": "^10 || ^11 || ^12",
         "psalm/plugin-phpunit": "^0.16.1 || ^0.18.0 || ^0.19.0",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.6",
-        "vimeo/psalm": "^5.0"
+        "vimeo/psalm": "^6.0"
     },
     "minimum-stability": "stable",
     "bin": [
@@ -27,7 +27,13 @@
     ],
     "config": {
         "allow-plugins": {
-            "ergebnis/composer-normalize": true
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ramsey/composer-repl": true,
+            "captainhook/plugin-composer": true,
+            "ramsey/devtools": true
         }
     }
 }

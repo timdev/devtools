@@ -1,3 +1,4 @@
-.idea
-composer.lock
-
+/composer.lock
+/build
+/.idea
+/.php-version
