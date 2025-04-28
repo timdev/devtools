@@ -10,6 +10,7 @@ Including this package as a dev-dependency gets you:
 
 * [PHPUnit] for testing.
 * [Psalm] for static analysis.
+* [PHPStan] for another flavor of static analysis.
 * [PHP_CodeSniffer] for linting
 * [Roave Security Advisories] to help avoid depending on packages with 
   vulnerabilities.
@@ -77,6 +78,7 @@ TimDev Software.
 
 [PHPUnit]: https://phpunit.de/
 [Psalm]: https://psalm.dev/
+[PHPStan]: https://phpstan.org/
 [PHP_CodeSniffer]: https://github.com/squizlabs/PHP_CodeSniffer
 [Roave Security Advisories]: https://github.com/roave/security-advisories
 [ramsey/devtools]: https://github.com/ramsey/devtools
