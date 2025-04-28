@@ -27,7 +27,9 @@ function ensureComposerScripts($composerPath)
     $data['scripts'] = array_merge(
         $data['scripts'] ?? [],
         [
-            'dev:analyze' => 'psalm',
+            'dev:analyze' => ['@dev:analyze:psalm', '@dev:analyze:phpstan'],
+            'dev:analyze:psalm' => 'psalm',
+            'dev:analyze:phpstan' => 'phpstan',
             'dev:coverage' => 'XDEBUG_MODE=coverage phpunit --coverage-text --colors=always',
             'dev:coverage:html' => 'XDEBUG_MODE=coverage phpunit --coverage-html build/coverage && echo \'\nCoverage Report: build/coverage/index.html\'',
             'dev:cs' => 'phpcs',
@@ -45,7 +47,9 @@ function ensureComposerScripts($composerPath)
     $data['scripts-descriptions'] = array_merge(
         $data['scripts-descriptions'] ?? [],
         [
-            'dev:analyze' => 'Run static analysis with psalm.',
+            'dev:analyze' => 'Run static analysis with both psalm + phpstan.',
+            'dev:analyze:psalm' => 'Run static analysis with psalm.',
+            'dev:analyze:phpstan' => 'Run static analysis with phpstan.',
             'dev:coverage' => 'Report unit test coverage with output in the terminal.',
             'dev:coverage:html' => 'Generate unit test coverage report.',
             'dev:cs' => 'Run code style checks.',
@@ -92,6 +96,7 @@ try {
     copyConfig("$libDir/tooling-config/phpcs.xml.dist", "$projectDir/phpcs.xml.dist");
     copyConfig("$libDir/tooling-config/phpunit.xml.dist", "$projectDir/phpunit.xml.dist");
     copyConfig("$libDir/tooling-config/psalm.xml.dist", "$projectDir/psalm.xml.dist");
+    copyConfig("$libDir/tooling-config/phpstan.dist.neon", "$projectDir/phpstan.dist.neon");
     copyConfig("$libDir/tooling-config/captainhook.json", "$projectDir/captainhook.json");
 
     $ghDir = "$projectDir/.github/workflows";
