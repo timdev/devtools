@@ -28,13 +28,7 @@
     ],
     "config": {
         "allow-plugins": {
-            "ergebnis/composer-normalize": true,
-            "phpstan/extension-installer": true,
-            "php-http/discovery": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ramsey/composer-repl": true,
-            "captainhook/plugin-composer": true,
-            "ramsey/devtools": true
+            "ergebnis/composer-normalize": true
         }
     }
 }
